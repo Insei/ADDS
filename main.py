@@ -1,7 +1,9 @@
 import json
 import uuid
 import threading
+import os
 from servers.uvicorn import UvicornServerThreaded
+from servers.tftp import TftpServerThreaded
 from fastapi import Security, Depends, FastAPI, HTTPException
 from fastapi.security.api_key import APIKeyHeader, APIKeyQuery, APIKey
 from fastapi.openapi.docs import get_swagger_ui_html
@@ -221,5 +223,8 @@ async def device_ipxe_poweroff(uuid: str):
 import time
 if __name__ == '__main__':
     uvicorn = UvicornServerThreaded(app=app)
+    os.path.dirname(os.path.realpath(__file__))
+    tftp = TftpServerThreaded(os.path.dirname(os.path.realpath(__file__)) + "\\tftp_root\\")
+    tftp.start()
     uvicorn.start()
     uvicorn.join()
