@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "state": "poweroff",
+        "uuid": "a08969b3-02a4-476c-8961-bb0723c327d2",
+        "ipxe_url": "sdsadf23f2edvaedfasdf",
+        "power": "poe",
+        "model": "rpi4-8gb",
+        "vendor": "raspberry",
+        "serial": "4fb369b0",
+        "mac": "dca632fd1aa6",
+        "connected_switch": {
+            "id": "22118W1000057",
+            "port": "1/0/3"
+        }
+    }
+]

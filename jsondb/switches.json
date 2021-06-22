@@ -1,0 +1,13 @@
+[
+  {
+    "id": "22118W1000057",
+    "ip": "10.10.99.3",
+    "model": "TL-SG2210MP",
+    "vendor": "TP-Link",
+    "connection": "telnet",
+    "credentials": {
+      "user": "",
+      "password": ""
+    }
+  }
+]
