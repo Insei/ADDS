@@ -21,6 +21,15 @@ class Devices:
             if device['uuid'] == uuid:
                 return device
 
+    def getBySerial(self, serial, in_use = True):
+        for device in self.pool:
+            if in_use and not device['uuid']:
+                continue
+            shortserial = serial[8:16]
+
+            if device['serial'] == serial or device['serial'] == shortserial:
+                return device
+
     def getOneUnused(self, model: str):
         for device in self.pool:
             if not device['uuid'] and device['model'] == model:
