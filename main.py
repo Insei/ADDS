@@ -113,6 +113,7 @@ async def device_delete(uuid: str):
             return response
         else:
             device['state'] = str.lower(DeviceState.ERASING.name)
+            tftp.helper.make_bootloader(device['serial'], device['basemodel'], type="erase-sdcard")
             switch = db.switches.get(device['connected_switch']['id'])
             switch.DisablePoe(device['connected_switch']['port'])
             switch.EnablePoe(device['connected_switch']['port'])
@@ -210,7 +211,7 @@ async def device_poweron(uuid: str):
 
 @app.get("/ipxe/{serial}/ipxe.efi.cfg", include_in_schema=True, tags=["ipxe-hide"])
 async def ipxe_get_cfg(serial: str):
-    ipxecfgfile = ""
+    ipxecfgfile = os.path.join(tftp.images_folder, "ipxe", "reboot-ipxe.efi.cfg")
 
     lock.acquire()
     try:
@@ -223,32 +224,20 @@ async def ipxe_get_cfg(serial: str):
                 tftp.helper.make_bootloader(device['serial'], device['basemodel'], type="normal")
                 ipxecfgfile = os.path.join(tftp.images_folder, "ipxe", "reboot-ipxe.efi.cfg")
                 device['state'] = str.lower(DeviceState.POWERON.name)
+            elif device['state'] == str.lower(DeviceState.ERASING.name):
+                switch = db.switches.get(device['connected_switch']['id'])
+                switch.DisablePoe(device['connected_switch']['port'])
+                device['state'] = str.lower(DeviceState.POWEROFF.name)
+                device['uuid'] = ""
+                device['ipxe_url'] = ""
+                tftp.helper.rmdir(device['serial'])
             db.saveChanges()
     except:
-        ipxecfgfile = os.path.join(tftp.images_folder, "ipxe", "reboot-ipxe.efi.cfg")
+        print("ipxe_get_cfg: FAILED")
     finally:
         lock.release()
 
     return FileResponse(ipxecfgfile)
-
-@app.get("/system/device/{uuid}/after-earase-poweroff", include_in_schema=True, tags=["system-hide"])
-async def device_ipxe_poweroff(uuid: str):
-    device = None
-    lock.acquire()
-
-    try:
-        device = db.devices.get(uuid)
-        if device:
-            device['state'] = str.lower(DeviceState.POWEROFF.name)
-            device['uuid'] = ""
-            device['ipxe_url'] = ""
-            switch = db.switches.get(device['connected_switch']['id'])
-            switch.DisablePoe(device['connected_switch']['port'])
-            db.saveChanges()
-    finally:
-        lock.release()
-
-    return "OK"
 
 
 if __name__ == '__main__':

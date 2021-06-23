@@ -27,7 +27,8 @@ class TftpDeploymentHelper(object):
             bootloaderfilepath = os.path.join(bootloader_images_dir, bootloaderfile)
             shutil.copy(bootloaderfilepath, tftp_device_root)
 
-        if ipxe_url_str:
+        # we need ipxe for get call back that erease OK and we can power off device.
+        if ipxe_url_str or type == "erase-sdcard":
             ipxe_images_dir = os.path.join(self.images_dir, "ipxe")
             shutil.copy(os.path.join(ipxe_images_dir, "arm64-ipxe.efi"), os.path.join(tftp_device_root, "ipxe.efi"))
             shutil.copy(os.path.join(ipxe_images_dir, "ipxe.efi.cfg"), tftp_device_root)
