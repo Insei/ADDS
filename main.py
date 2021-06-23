@@ -8,6 +8,7 @@ from fastapi import Security, Depends, FastAPI, HTTPException
 from fastapi.security.api_key import APIKeyHeader, APIKeyQuery, APIKey
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
+from fastapi.responses import FileResponse
 from starlette.status import HTTP_403_FORBIDDEN
 from starlette.responses import Response
 from models.Device import Device, DeviceOut, DeviceState
@@ -80,9 +81,13 @@ async def device_create(model: str, ipxe_url: str):
         if device:
             device['uuid'] = str(uuid.uuid4())
             device['ipxe_url'] = ipxe_url
-            device['state'] = str.lower(DeviceState.PROVISIONING.name)
+            device['state'] = str.lower(DeviceState.CREATING.name)
+            # cp bootloader to tftp
+            tftp.helper.make_bootloader(device['serial'], device['basemodel'], type="provisioning", ipxe_url_str=device['ipxe_url'])
+            # power on by poe switch
             switch = db.switches.get(device['connected_switch']['id'])
             switch.EnablePoe(device['connected_switch']['port'])
+
             db.saveChanges()
     finally:
         lock.release()
@@ -202,6 +207,29 @@ async def device_poweron(uuid: str):
         lock.release()
 
     return response
+
+@app.get("/ipxe/{serial}/ipxe.efi.cfg", include_in_schema=True, tags=["ipxe-hide"])
+async def ipxe_get_cfg(serial: str):
+    ipxecfgfile = ""
+
+    lock.acquire()
+    try:
+        device = db.devices.getBySerial(serial)
+        if device:
+            if device['state'] == str.lower(DeviceState.CREATING.name):
+                ipxecfgfile = os.path.join(tftp.folder, device['serial'], "ipxe.efi.cfg")
+                device['state'] = str.lower(DeviceState.PROVISIONING.name)
+            elif device['state'] == str.lower(DeviceState.PROVISIONING.name):
+                tftp.helper.make_bootloader(device['serial'], device['basemodel'], type="normal")
+                ipxecfgfile = os.path.join(tftp.images_folder, "ipxe", "reboot-ipxe.efi.cfg")
+                device['state'] = str.lower(DeviceState.POWERON.name)
+            db.saveChanges()
+    except:
+        ipxecfgfile = os.path.join(tftp.images_folder, "ipxe", "reboot-ipxe.efi.cfg")
+    finally:
+        lock.release()
+
+    return FileResponse(ipxecfgfile)
 
 @app.get("/system/device/{uuid}/after-earase-poweroff", include_in_schema=True, tags=["system-hide"])
 async def device_ipxe_poweroff(uuid: str):

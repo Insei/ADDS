@@ -9,9 +9,10 @@ class ConnectedSwitch(BaseModel):
 class DeviceState(Enum):
     POWEROFF = 0
     POWERON = 1
-    PROVISIONING = 2
-    EARASING = 3
-    REBOOTING = 4
+    CREATING = 2
+    PROVISIONING = 3
+    EARASING = 4
+    REBOOTING = 5
 
 class Device(BaseModel):
     id: int
@@ -19,6 +20,7 @@ class Device(BaseModel):
     serial: str
     mac: str
     vendor: str
+    basemodel: str
     model: str
     power: str
     connected_switch: ConnectedSwitch
