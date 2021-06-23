@@ -6,8 +6,7 @@ class UvicornServerThreaded(object):
     def __init__(self, app):
         self.app = app
         self.thread = threading.Thread(target=self._run, args=())
-        self.thread.daemon = True                            # Daemonize thread
-        #self.thread.start()                                  # Start the execution
+        self.thread.daemon = True
 
     def _run(self):
         uvicorn.run(self.app, host="0.0.0.0", port=5000)

@@ -87,7 +87,7 @@ async def device_create(model: str, ipxe_url: str):
     if device:
         response.setDevice(device)
     else:
-        response.status.code = 3
+        response.status.code = ResponceStatusCode.TRYLATER
         response.status.message = "All devices in pool are used now, try later"
 
     return response
@@ -220,7 +220,6 @@ async def device_ipxe_poweroff(uuid: str):
     return "OK"
 
 
-import time
 if __name__ == '__main__':
     uvicorn = UvicornServerThreaded(app=app)
     os.path.dirname(os.path.realpath(__file__))
