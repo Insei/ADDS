@@ -11,7 +11,7 @@ class DeviceState(Enum):
     POWERON = 1
     CREATING = 2
     PROVISIONING = 3
-    EARASING = 4
+    ERASING = 4
     REBOOTING = 5
 
 class Device(BaseModel):

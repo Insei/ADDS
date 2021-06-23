@@ -112,7 +112,7 @@ async def device_delete(uuid: str):
             response.status.code = ResponceStatusCode.NOTFOUND
             return response
         else:
-            device['state'] = str.lower(DeviceState.EARASING.name)
+            device['state'] = str.lower(DeviceState.ERASING.name)
             switch = db.switches.get(device['connected_switch']['id'])
             switch.DisablePoe(device['connected_switch']['port'])
             switch.EnablePoe(device['connected_switch']['port'])
@@ -136,10 +136,10 @@ async def device_reboot(uuid: str):
         if not device:
             response.status.code = ResponceStatusCode.NOTFOUND
             return response
-        elif device['state'] == str.lower(DeviceState.EARASING.name):
+        elif device['state'] == str.lower(DeviceState.ERASING.name) or device['state'] == str.lower(DeviceState.CREATING.name) or device['state'] == str.lower(DeviceState.PROVISIONING.name):
             response.status.code = ResponceStatusCode.TRYLATER
         else:
-            device['state'] = str.lower(DeviceState.REBOOTING.name)
+            device['state'] = str.lower(DeviceState.POWERON.name)
             switch = db.switches.get(device['connected_switch']['id'])
             switch.DisablePoe(device['connected_switch']['port'])
             switch.EnablePoe(device['connected_switch']['port'])
@@ -164,7 +164,7 @@ async def device_poweroff(uuid: str):
         if not device:
             response.status.code = ResponceStatusCode.NOTFOUND
             return response
-        elif device['state'] == str.lower(DeviceState.EARASING.name):
+        elif device['state'] == str.lower(DeviceState.ERASING.name):
             response.status.code = ResponceStatusCode.TRYLATER
         else:
             device['state'] = str.lower(DeviceState.POWEROFF.name)
@@ -191,7 +191,7 @@ async def device_poweron(uuid: str):
         if not device:
             response.status.code = ResponceStatusCode.NOTFOUND
             return response
-        elif device['state'] == str.lower(DeviceState.EARASING.name):
+        elif device['state'] == str.lower(DeviceState.ERASING.name):
             response.status.code = ResponceStatusCode.TRYLATER
         else:
             device['state'] = str.lower(DeviceState.POWERON.name)
