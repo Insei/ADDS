@@ -5,6 +5,7 @@
         "uuid": "a08969b3-02a4-476c-8961-bb0723c327d2",
         "ipxe_url": "sdsadf23f2edvaedfasdf",
         "power": "poe",
+        "basemodel": "rpi4",
         "model": "rpi4-8gb",
         "vendor": "raspberry",
         "serial": "4fb369b0",

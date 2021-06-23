@@ -19,6 +19,7 @@ class Device(BaseModel):
     serial: str
     mac: str
     vendor: str
+    basemodel: str
     model: str
     power: str
     connected_switch: ConnectedSwitch
