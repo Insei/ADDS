@@ -15,7 +15,9 @@ from models.responses.DeviceResponse import DeviceResponse
 from models.responses.DevicesListResponse  import DevicesListResponse
 from models.responses.BaseResponse import BaseResponse, ResponceStatusCode
 from database import Database
- 
+
+main_dir = os.path.dirname(os.path.realpath(__file__))
+
 lock = threading.Lock()
 db = Database()
 
@@ -37,6 +39,7 @@ async def get_api_key(
         raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Could not validate credentials")
 
 app = FastAPI(title="ARM devices control API")
+tftp = TftpServerThreaded(os.path.join(main_dir, "tftp_root") + os.sep, os.path.join(main_dir, "images") + os.sep)
 
 @app.get("/device/list", response_model=DevicesListResponse, tags=["device"])
 #async def devices_get_list(api_key: APIKey = Depends(get_api_key)):
@@ -222,8 +225,6 @@ async def device_ipxe_poweroff(uuid: str):
 
 if __name__ == '__main__':
     uvicorn = UvicornServerThreaded(app=app)
-    os.path.dirname(os.path.realpath(__file__))
-    tftp = TftpServerThreaded(os.path.dirname(os.path.realpath(__file__)) + "\\tftp_root\\")
     tftp.start()
     uvicorn.start()
     uvicorn.join()

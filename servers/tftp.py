@@ -2,9 +2,10 @@ import threading
 from pkg.tftpy.tftpy import TftpServer
 
 class TftpServerThreaded(object):
-    def __init__(self, path):
+    def __init__(self, path, images_path):
         self.ip = '0.0.0.0'
         self.folder = path
+        self.images_folder=images_path
         self.server = TftpServer(self.folder)
         self.thread = threading.Thread(target=self._run, args=())
         self.thread.daemon = True
