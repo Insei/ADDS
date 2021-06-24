@@ -18,7 +18,7 @@ This set of software and devices is used to automate the deployment of systems o
 # We use:
 
 ## Fake database:
-There is a preconfigured JOSN pool of [devices](https://github.com/Insei/ASBDDS/blob/main/jsondb/devices.json) and JSON pool [poe switches](https://github.com/Insei/ASBDDS/blob/main/jsondb/devices.json). Devices and swithes in this pools adds manualy by redacting files, this is our fake db now.
+There is a preconfigured JSON pool of [devices](https://github.com/Insei/ASBDDS/blob/main/jsondb/devices.json) and JSON pool [poe switches](https://github.com/Insei/ASBDDS/blob/main/jsondb/devices.json). Devices and swithes in this pools adds manualy by redacting files, this is our fake db now.
 Each device has a record to which switch and to which port it is [connected](https://github.com/Insei/ASBDDS/blob/main/jsondb/devices.json#L13).
 
 ## U-boot (as Bootloader and Storage cleaner)
