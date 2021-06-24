@@ -1,1 +1,1 @@
-# ASBDS - is a simple Arm Single Board Deployment System API
+# ASBDDS - is a simple ARM Single Board Devices Deployment System API
