@@ -62,14 +62,11 @@ Mark device from the pool of unused devices as used.
 
 ## GET /device/{UUID}/
 Get device from the pool of used devices.
-*parameters:* model and ipxe_url
 
 1) Return JSON device data with specified uuid if exist.
 
 ## POST /device/{UUID}/reboot
 Reboot device from the pool of used devices.
-
-*parameters:* model and ipxe_url
 
 1) Get device with specified uuid if exist.
 2) Check that device state is allowing reboot, if not - return try later code.
@@ -79,7 +76,6 @@ Reboot device from the pool of used devices.
 
 ## POST /device/{UUID}/poweroff
 Reboot device from the pool of used devices.
-*parameters:* model and ipxe_url
 
 1) Get device with specified uuid if exist.
 2) Check that device state is allowing poweroff, if not - return try later code.
@@ -89,7 +85,6 @@ Reboot device from the pool of used devices.
 
 ## POST /device/{UUID}/poweron
 Reboot device from the pool of used devices.
-*parameters:* model and ipxe_url
 
 1) Get device with specified uuid if exist.
 2) Check that device state is allowing power on, if not - return try later code.
@@ -99,7 +94,6 @@ Reboot device from the pool of used devices.
 
 ## DELETE /device/{UUID}/
 Remove device from the pool of used devices.
-*parameters:* model and ipxe_url
 
 1) Get device with specified uuid if exist.
 2) Copy firmware(if exist), bootloaders(u-boot clean storage build) to folder with name as device serial in tftp root.
