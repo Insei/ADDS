@@ -30,7 +30,7 @@ We use 3 different build of u-boot for each device. Each build has a different b
 ## IPXE
 We use ipxe in two variants:
 * Default (For OS Installation)
-* For API callbacks. (As example: u-boot after erasing storage boot wia ipxe, and get ipxe.cfg from the API at this moment we check the device state and if state is erasing - we switch device power to off on ethernet port switch and remove device uuid(makes device not in use))
+* For API callbacks. (As example: u-boot after erasing storage boot via ipxe, and get ipxe.cfg from the API at this moment we check the device state and if state is erasing - we switch device power to off on ethernet port switch and remove device uuid(makes device not in use))
 
 ## TFTP
 We use TFTP server for provision bootloaders and ipxe to devices.
