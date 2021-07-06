@@ -209,7 +209,7 @@ async def device_poweron(uuid: str):
 
     return response
 
-@app.get("/ipxe/{serial}/ipxe.efi.cfg", include_in_schema=True, tags=["ipxe-hide"])
+@app.get("/ipxe/{serial}/ipxe.efi.cfg", include_in_schema=False, tags=["ipxe-hide"])
 async def ipxe_get_cfg(serial: str):
     ipxecfgfile = os.path.join(tftp.images_folder, "ipxe", "reboot-ipxe.efi.cfg")
 
