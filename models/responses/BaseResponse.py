@@ -4,7 +4,7 @@ from enum import Enum
 class ResponceStatusCode(Enum):
     OK = 0
     NOTFOUND = 1
-    ERROR = 2
+    ERROR = 3
     TRYLATER = 2
 
 class JsonResponseStatus(BaseModel):

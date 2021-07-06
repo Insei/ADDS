@@ -202,7 +202,7 @@ async def device_poweron(uuid: str):
             
         response.setDevice(device)
     except:
-        response.status.code = 2
+        response.status.code  =  ResponceStatusCode.ERROR
         response.status.message = "Failed to power on device"
     finally:
         lock.release()
