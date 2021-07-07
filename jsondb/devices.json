@@ -1,6 +1,7 @@
 [
     {
         "id": 1,
+        "name":  "",
         "state": "poweroff",
         "uuid": "a08969b3-02a4-476c-8961-bb0723c327d2",
         "ipxe_url": "sdsadf23f2edvaedfasdf",

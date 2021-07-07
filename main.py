@@ -71,7 +71,7 @@ async def device_get(uuid: str):
     return response
 
 @app.put("/device", response_model=DeviceResponse, tags=["device"])
-async def device_create(model: str, ipxe_url: str):
+async def device_create(model: str, ipxe_url: str, name: str):
     response = DeviceResponse()
     device = None
     lock.acquire()
@@ -80,6 +80,7 @@ async def device_create(model: str, ipxe_url: str):
         device = db.devices.getOneUnused(model)
         if device:
             device['uuid'] = str(uuid.uuid4())
+            device['name'] = name;
             device['ipxe_url'] = ipxe_url
             device['state'] = str.lower(DeviceState.CREATING.name)
             # cp bootloader to tftp
@@ -230,6 +231,7 @@ async def ipxe_get_cfg(serial: str):
                 device['state'] = str.lower(DeviceState.POWEROFF.name)
                 device['uuid'] = ""
                 device['ipxe_url'] = ""
+                device['name'] = ""
                 tftp.helper.rmdir(device['serial'])
             db.saveChanges()
     except:

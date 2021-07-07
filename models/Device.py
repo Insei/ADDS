@@ -16,6 +16,7 @@ class DeviceState(Enum):
 
 class Device(BaseModel):
     id: int
+    name: str
     state: str
     serial: str
     mac: str
@@ -29,6 +30,7 @@ class Device(BaseModel):
 
 class DeviceOut(BaseModel):
     uuid: str
+    name: str
     state: str
     serial: str
     mac: str

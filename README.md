@@ -46,7 +46,7 @@ We use switches as power DC for single board arm devices. We manage POE power on
 # Description of the processes of each API method.
 ## PUT /device/
 Mark device from the pool of unused devices as used.
-*parameters:* model and ipxe_url
+*parameters:* model, name and ipxe_url
 
 1) Create device from the pool of devices, if unused device with this model exist in the pool.
 2) Setup new uuid for this device for accessing to this device by uuid.
