@@ -112,7 +112,7 @@ async def device_delete(uuid: str):
         if not device:
             response.status.code = ResponceStatusCode.NOTFOUND
             return response
-        else:
+        elif device['state'] != str.lower(DeviceState.ERASING.name):
             device['state'] = str.lower(DeviceState.ERASING.name)
             tftp.helper.make_bootloader(device['serial'], device['basemodel'], type="erase-sdcard")
             switch = db.switches.get(device['connected_switch']['id'])
@@ -120,6 +120,10 @@ async def device_delete(uuid: str):
             switch.EnablePoe(device['connected_switch']['port'])
             response.setDevice(device)
             db.saveChanges()
+        else:
+            response.status.code = ResponceStatusCode.ERROR
+            response.status.message = "device is already being removed"
+
     except:
         response.status.code = ResponceStatusCode.ERROR
     finally:
